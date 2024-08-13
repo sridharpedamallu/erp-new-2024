@@ -1,0 +1,41 @@
+<div class="grid">
+    <div class="col-1 header-container p-0" style="width:150px">
+        <a class="logo text-primary mt-4" routerLink="/">mini<span>CRM</span></a>
+    </div>
+    <div class="col-6 pt-4">
+        <div class="flex justify-content-center">
+            <input pInputText id="searchText" placeholder="Search text..." type="text" style="max-width: 500px;"
+                class="text-base text-color surface-overlay p-2 mr-1 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-8">
+            <button pButton label="Search" class="p-button-sm text-xs"></button>
+        </div>
+    </div>
+    <div class="col-2 pt-4">
+        <div class="flex justify-content-center">
+            <input pInputText id="sCode" placeholder="SCode" type="text" style="max-width: 500px;"
+                class="text-base text-color surface-overlay p-2 mr-1 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-8">
+            <button pButton label="GO" class="p-button-sm text-xs"></button>
+        </div>
+    </div>
+    <div class="col-3 pt-4">
+        <div class="flex align-items-center justify-content-end">
+            <a href="javascript:void(0)" class="mr-2" (click)="switchTheme()">
+                <i [ngClass]="themeService.currentTheme()=='light'? 'pi-moon' : 'pi-sun'"
+                    class="pi pi-sun text-xl text-primary"></i>
+            </a>
+            <a href="#" class="mr-2">
+                <i class="pi pi-calendar text-xl text-primary"></i>
+            </a>
+            <a href="#" class="mr-2">
+                <i class="pi pi-user text-xl text-primary"></i>
+            </a>
+            <a href="#">
+                <i class="pi pi-cog text-xl text-primary"></i>
+            </a>
+            <p-button styleClass="p-button-sm ml-2 text-white" label="Logout" (onClick)="LogoutButtonHandler()">
+            </p-button>
+
+        </div>
+    </div>
+</div>
+
+<p-menubar [model]="items"></p-menubar>

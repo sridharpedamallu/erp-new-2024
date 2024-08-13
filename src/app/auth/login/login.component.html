@@ -1,0 +1,37 @@
+<div class="container flex justify-content-center align-items-center" style="padding-top: 10%;">
+
+    <div class="card border-1 border-round pb-4" style="width: 700px; min-height: 350px;">
+        <div class="card-body flex flex-column justify-content-center align-items-center pl-4 pr-4">
+            <h2>LOGIN</h2>
+            <div class="field w-9" style="margin-top: 20px;">
+                <label for="loginId">E-Mail</label>
+                <input id="loginId" type="text" [(ngModel)]="data.loginId"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+            </div>
+            <div *ngIf="!data.otpLogin" class="field w-9">
+                <label for="password">Password</label>
+                <input id="password" type="password" [(ngModel)]="data.password"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+            </div>
+            <div *ngIf="data.otpLogin" class="field w-9">
+                <label for="password">Confirm OTP</label>
+                <input id="password" type="password" [(ngModel)]="data.otp" [disabled]="data.otpLogin && !otpGenerated"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+            </div>
+            <div class="field w-9 pt-4 flex justify-content-between">
+                <p-button *ngIf="!data.otpLogin" label="Login" (onClick)="loginButtonHandler()"></p-button>
+                <p-button *ngIf="data.otpLogin && !otpGenerated" label="Send OTP"
+                    (onClick)="GenerateOTPHandler()"></p-button>
+                <p-button *ngIf="data.otpLogin && otpGenerated" label="Verify OTP"
+                    (onClick)="ValidateOTPHandler()"></p-button>
+                <p-button styleClass="p-button-info" *ngIf="!data.otpLogin"
+                    (onClick)="SwitchLoginHandler({otpLogin:true})" label="OTP Login"></p-button>
+                <p-button styleClass="p-button-info" *ngIf="data.otpLogin"
+                    (onClick)="SwitchLoginHandler({otpLogin:false})" label="Password Login"></p-button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<p-toast></p-toast>

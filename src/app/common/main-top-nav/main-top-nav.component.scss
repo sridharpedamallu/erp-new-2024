@@ -1,0 +1,20 @@
+.header-container {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+
+  .logo {
+    padding: 0 1rem;
+    font-size: 1.75rem;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+}
+
+::ng-deep .p-menuitem {
+  padding: 0 !important;
+}
+
+::ng-deep .p-menubar {
+  padding: 0 !important;
+}
