@@ -5,16 +5,24 @@ import { Injectable } from "@angular/core";
   providedIn: "root",
 })
 export class TenantsService {
-  url: string = "http://localhost:8080/tenants";
+  url: string = "http://localhost:8080/api/tenants";
 
   constructor(private http: HttpClient) {}
 
   getAllTenants() {
-    this.http.get(this.url);
+    return this.http.get(this.url);
   }
 
-  addTenant() {}
+  getAllTenantById(id: number) {
+    return this.http.get(this.url + "/" + id.toString());
+  }
+
+  addTenant(name: string, email: string, isActive: boolean) {
+    return this.http.post(this.url, { name, email, isActive });
+  }
   editTenant() {}
-  deleteTenant() {}
+  deleteTenant(id: number) {
+    return this.http.delete(this.url + "/" + id.toString());
+  }
   restoreTenant() {}
 }

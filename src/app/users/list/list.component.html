@@ -2,53 +2,59 @@
 
     <div class="grid mb-2">
         <div class="col-10">
-            <span class="text-2xl">Tenant List</span>
+            <span class="text-2xl">User List</span>
         </div>
         <div class="col-2">
             <div style="display: flex; align-items: center; justify-content: end;">
-                <a routerLink="/tenants/add" class="mr-2">Add new tenant</a>
+                <a routerLink="/users/add/tenant/{{tenantId}}" class="mr-2">Add new user</a>
+                <span>|</span>
+                <a routerLink="/tenants/list" class="ml-2">Back to Tenant list</a>
             </div>
         </div>
     </div>
-    <p-table styleClass="p-datatable-gridlines" [rowHover]="true" [value]="tenantList"
+    <p-table styleClass="p-datatable-gridlines" [rowHover]="true" [value]="userList"
         [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
                 <th>Id</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Phone</th>
+                <th>User Type</th>
                 <th>Updated At</th>
                 <th>Updated By</th>
                 <th style="width: 150px; text-align: center;">Active</th>
                 <th style="width: 250px; text-align: center;">Actions</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-tenant>
+        <ng-template pTemplate="body" let-user>
             <tr class="data">
-                <td>{{ tenant.id }}</td>
-                <td>{{ tenant.name }}</td>
-                <td>{{ tenant.email }}</td>
-                <td>{{ tenant.updatedAt | date:'medium' }}</td>
-                <td>{{ tenant.updator.name }}</td>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.userType }}</td>
+                <td>{{ user.updatedAt | date:'medium' }}</td>
+                <td>{{ user.updator.name }}</td>
                 <td style="text-align: center;">
-                    <i [ngClass]="tenant.isActive?'pi pi-check text-green':'pi pi-times text-red'"></i>
+                    <i [ngClass]="user.isActive?'pi pi-check text-green':'pi pi-times text-red'"></i>
                 </td>
                 <td style="text-align: center;">
-                    <a routerLink="/tenants/edit/{{tenant.id}}" class="mr-3">
+                    <a routerLink="/users/edit/tenant/{{tenantId}}/{{user.id}}" class="mr-3">
                         <i class="pi pi-pencil text-primary"></i>
                     </a>
                     <a href="javascript:void(0)" class="mr-3">
                         <i class="pi pi-clone text-green"></i>
                     </a>
-                    <a href="javascript:void(0)" (click)="deleteTenant(tenant.id)" class="mr-3">
+                    <a href="javascript:void(0)" (click)="deleteUser(user.id)" class="mr-3">
                         <i class="pi pi-trash text-red"></i>
                     </a>
                     <a href="javascript:void(0)" class="mr-3">
                         <i class="pi pi-info text-yellow"></i>
                     </a>
-                    <a routerLink="/users/list/tenant/{{tenant.id}}" href="javascript:void(0)" class="mr-3">
+                    <!-- <a routerLink="/users/list/tenant/{{user.id}}" href="javascript:void(0)" class="mr-3">
                         <i class="pi pi-users text-cyan"></i>
-                    </a>
+                    </a> -->
                 </td>
             </tr>
         </ng-template>

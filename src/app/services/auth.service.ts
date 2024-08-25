@@ -1,6 +1,6 @@
 import { Injectable, signal } from "@angular/core";
 import { EncryptServiceService } from "./encrypt.service";
-import { Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
 
 interface IUser {
   userName: string;
@@ -44,12 +44,15 @@ const users: IUser[] = [
   providedIn: "root",
 })
 export class AuthService {
+  url: string = "http://localhost:8080/api/auth";
   loginSignal = signal(false);
   loggedInUser = signal(<IUser>{});
+  loginError = signal(false);
+  loginErrorMessage = signal("");
 
   constructor(
     private encryptService: EncryptServiceService,
-    private router: Router
+    private http: HttpClient
   ) {
     if (sessionStorage.getItem("user")) {
       this.loginSignal.set(true);
@@ -64,38 +67,18 @@ export class AuthService {
   }
 
   LoginAction(data: any) {
-    const u = users.find(
-      (user: any) =>
-        user.userName == data.loginId && user.password == data.password
-    );
-    if (u) {
-      this.loggedInUser.set({ ...u });
-
-      const dt = new Date();
-      sessionStorage.setItem(
-        "user",
-        this.encryptService.encrypt(JSON.stringify(u))
-      );
-      sessionStorage.setItem("login", dt.toISOString());
-      sessionStorage.setItem("lastAccessTime", dt.toISOString());
-      this.loginSignal.set(true);
-    } else {
-      throw "Invalid User credentials";
-    }
+    return this.http.post(this.url, {
+      email: data.email,
+      password: data.password,
+    });
   }
 
-  GenerateOTP(data: any) {
-    const otp = "123123";
-    console.log(otp);
-    return otp;
+  GenerateOTP(email: any) {
+    return this.http.post(this.url + "/generate-otp", { email });
   }
 
-  VerifyOTP(data: any) {
-    if (data.loginId == "test" && data.otp == "123123") {
-      this.loginSignal.set(true);
-    } else {
-      throw "Invalid OTP / User name";
-    }
+  VerifyOTP(email: string, otp: string, password: string) {
+    return this.http.post(this.url + "/verify-otp", { email, otp, password });
   }
 
   LogoutAction() {

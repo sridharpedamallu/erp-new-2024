@@ -1,8 +1,8 @@
 import { Inject, Injectable, signal } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 enum styles {
-  DARK = "md-dark-indigo",
-  LIGHT = "md-light-indigo",
+  DARK = "lara-dark-blue",
+  LIGHT = "lara-blue",
 }
 
 @Injectable({

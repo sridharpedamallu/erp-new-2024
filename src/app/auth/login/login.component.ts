@@ -7,6 +7,7 @@ import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { FormsModule } from "@angular/forms";
 import { ToastModule } from "primeng/toast";
+import { EncryptServiceService } from "../../services/encrypt.service";
 
 @Component({
   selector: "app-login",
@@ -25,8 +26,8 @@ import { ToastModule } from "primeng/toast";
 export class LoginComponent {
   otpGenerated: boolean = false;
   data: any = {
-    loginId: "super@system.com",
-    password: "test",
+    email: "sys.admin@erp.com",
+    password: "",
     otpLogin: false,
     otp: "",
   };
@@ -34,7 +35,8 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private encryptService: EncryptServiceService
   ) {}
 
   SwitchLoginHandler(params: any) {
@@ -49,41 +51,52 @@ export class LoginComponent {
     if (this.data.otpLogin && this.data.otp.toString().length > 0) {
       this.ValidateOTPHandler();
     } else {
-      try {
-        this.authService.LoginAction({ ...this.data });
-        if (this.authService.loginSignal()) {
-          if (this.authService.loggedInUser().userType == 999) {
-            this.router.navigate(["/tenants/list"]);
-          } else {
-            this.router.navigate(["/"]);
+      this.authService.LoginAction({ ...this.data }).subscribe(
+        (data: any) => {
+          this.authService.loggedInUser.set({ ...data });
+
+          const dt = new Date();
+          sessionStorage.setItem(
+            "user",
+            this.encryptService.encrypt(JSON.stringify(data))
+          );
+          sessionStorage.setItem("login", dt.toISOString());
+          sessionStorage.setItem("lastAccessTime", dt.toISOString());
+          this.authService.loginSignal.set(true);
+          this.router.navigate(["/"]);
+        },
+        (e: any) => {
+          if (e.error == "Password reset required") {
+            setTimeout(() => {
+              this.router.navigate(["/auth/reset-password"]);
+            }, 1000);
           }
+          this.messageService.add({
+            severity: "error",
+            summary: "Invalid Login",
+            detail: e.error,
+          });
         }
-      } catch (error: any) {
-        this.messageService.add({
-          severity: "error",
-          summary: "Invalid Login",
-          detail: error,
-        });
-      }
+      );
     }
   }
   GenerateOTPHandler() {
-    this.otpGenerated = true;
-    this.data.otp = "";
-    this.authService.GenerateOTP({ ...this.data });
+    // this.otpGenerated = true;
+    // this.data.otp = "";
+    // this.authService.GenerateOTP({ ...this.data });
   }
   ValidateOTPHandler() {
-    try {
-      this.authService.VerifyOTP({ ...this.data });
-      if (this.authService.loginSignal()) {
-        this.router.navigate(["customer"]);
-      }
-    } catch (error: any) {
-      this.messageService.add({
-        severity: "error",
-        summary: "Invalid Login",
-        detail: error,
-      });
-    }
+    // try {
+    //   this.authService.VerifyOTP({ ...this.data });
+    //   if (this.authService.loginSignal()) {
+    //     this.router.navigate(["customer"]);
+    //   }
+    // } catch (error: any) {
+    //   this.messageService.add({
+    //     severity: "error",
+    //     summary: "Invalid Login",
+    //     detail: error,
+    //   });
+    // }
   }
 }
