@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
+import { ActivatedRoute, RouterModule } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { TenantsService } from "../../services/tenants.service";
@@ -26,16 +26,33 @@ import { MessageService } from "primeng/api";
 export class AddComponent {
   name: string = "";
   email: string = "";
+  phone: string = "";
   isActive: boolean = false;
+  cloneId: number = 0;
 
   constructor(
     private tenantService: TenantsService,
-    private messageService: MessageService
-  ) {}
+    private messageService: MessageService,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.activatedRoute.params.subscribe((e: any) => {
+      this.cloneId = e?.id;
+      if (this.cloneId) {
+        this.tenantService
+          .getAllTenantById(this.cloneId)
+          .subscribe((data: any) => {
+            this.name = data.name;
+            this.email = data.email;
+            this.phone = data.phone;
+            this.isActive = data.isActive;
+          });
+      }
+    });
+  }
 
   insertTenant() {
     this.tenantService
-      .addTenant(this.name, this.email, this.isActive)
+      .addTenant(this.name, this.email, this.phone, this.isActive)
       .subscribe(
         (data: any) => {
           this.messageService.add({
@@ -48,7 +65,7 @@ export class AddComponent {
           this.messageService.add({
             severity: "error",
             summary: "Error",
-            detail: "Unable to create Tenant",
+            detail: e.error.message,
           });
         }
       );

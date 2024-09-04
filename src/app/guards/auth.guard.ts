@@ -5,27 +5,23 @@ import {
   Router,
   CanActivateFn,
 } from "@angular/router";
-import { AuthService } from "../services/auth.service";
+import { SignalsService } from "../services/signals.service";
 
 export const AuthGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
-  const loginService = inject(AuthService);
+  const signals = inject(SignalsService);
   const router = inject(Router);
 
-  if (!loginService.loginSignal()) {
+  if (!signals.loginSignal()) {
     router.navigate(["auth/login"]);
     return false;
   }
 
   if (sessionStorage.getItem("login")) {
-    let sessionStartTime: Date = new Date(
-      <string>sessionStorage.getItem("lastAccessTime")
-    );
     const currentTime: Date = new Date();
     sessionStorage.setItem("lastAccessTime", currentTime.toISOString());
-    // sessionStartTime = new Date(sessionStartTime.getTime() + 6000 * 300);
   }
 
   return true;

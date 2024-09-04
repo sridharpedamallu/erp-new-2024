@@ -15,6 +15,10 @@ const routes: Routes = [
     component: EditComponent,
   },
   {
+    path: "clone/tenant/:tenantId/:id",
+    component: AddComponent,
+  },
+  {
     path: "list/tenant/:tenantId",
     component: ListComponent,
   },

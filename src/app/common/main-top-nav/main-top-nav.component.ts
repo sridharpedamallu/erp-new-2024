@@ -4,8 +4,9 @@ import { ThemeService } from "../../services/theme.service";
 import { Router } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { MenubarModule } from "primeng/menubar";
-import { AuthService } from "../../services/auth.service";
 import { CommonModule } from "@angular/common";
+import { SignalsService } from "../../services/signals.service";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: "app-main-top-nav",
@@ -23,7 +24,8 @@ export class MainTopNavComponent {
   constructor(
     public themeService: ThemeService,
     private router: Router,
-    public authService: AuthService
+    public signals: SignalsService,
+    private authService: AuthService
   ) {
     this.userItems = [
       {
@@ -68,8 +70,8 @@ export class MainTopNavComponent {
     ];
 
     if (
-      this.authService.loggedInUser() &&
-      this.authService.loggedInUser().userType == 999
+      this.signals.loggedInUser() &&
+      this.signals.loggedInUser().userType == 999
     ) {
       this.items = [...this.superUseritems];
     } else {

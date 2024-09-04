@@ -30,7 +30,9 @@ export class ListComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private userService: UsersService
+    private userService: UsersService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     this.activatedRoute.params.subscribe((e: any) => {
       this.tenantId = e.tenantId;
@@ -46,5 +48,33 @@ export class ListComponent implements OnInit {
     });
   }
 
-  deleteUser(userId: number) {}
+  deleteUser(userId: number) {
+    this.confirmationService.confirm({
+      message: "Are you sure you want to delete?",
+      header: "Confirmation",
+      icon: "pi pi-info-circle",
+      acceptIcon: "none",
+      rejectIcon: "none",
+      rejectButtonStyleClass: "p-button-text",
+      accept: () => {
+        this.userService.deleteUser(userId).subscribe({
+          next: (data: any) => {
+            this.messageService.add({
+              severity: "success",
+              summary: "Success",
+              detail: "User deleted successfully",
+            });
+            this.loadList();
+          },
+          error: (e: any) => {
+            this.messageService.add({
+              severity: "error",
+              summary: "Error",
+              detail: "Unable to delete User",
+            });
+          },
+        });
+      },
+    });
+  }
 }

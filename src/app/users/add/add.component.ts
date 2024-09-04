@@ -6,6 +6,7 @@ import { CardModule } from "primeng/card";
 import { UsersService } from "../../services/users.service";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
+import { TenantsService } from "../../services/tenants.service";
 
 @Component({
   selector: "app-add",
@@ -17,6 +18,7 @@ import { ToastModule } from "primeng/toast";
 })
 export class AddComponent {
   tenantId: number = 0;
+  cloneUser: number = 0;
   name: string = "";
   email: string = "";
   phone: string = "";
@@ -26,38 +28,78 @@ export class AddComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
     private userService: UsersService,
+    private tenantService: TenantsService,
     private messageService: MessageService
   ) {
     this.activatedRoute.params.subscribe((e: any) => {
       this.tenantId = e.tenantId;
+      this.cloneUser = e?.id;
+      if (this.cloneUser) {
+        this.userService.getUserById(this.cloneUser).subscribe((data: any) => {
+          this.name = data.name;
+          this.email = data.email;
+          this.phone = data.phone;
+          this.isActive = data.isActive;
+          this.userType = data.userType;
+        });
+      }
     });
   }
 
   insertUser() {
-    this.userService
-      .addUser(
-        this.name,
-        this.email,
-        this.phone,
-        this.tenantId,
-        this.userType,
-        this.isActive
-      )
-      .subscribe(
-        (data: any) => {
-          this.messageService.add({
-            severity: "success",
-            summary: "Success",
-            detail: "Tenant created successfully",
-          });
-        },
-        (e: any) => {
-          this.messageService.add({
-            severity: "error",
-            summary: "Error",
-            detail: "Unable to create Tenant",
-          });
+    let insertUserflg: boolean = false;
+    this.tenantService
+      .getTenantLoginSetupData(this.tenantId)
+      .subscribe((data: any) => {
+        if (data.loginSettings.domainRestricted) {
+          let tempDomainName = this.email.split("@")[1];
+          if (data.domains.length == 0) {
+            this.messageService.add({
+              severity: "error",
+              summary: "Error",
+              detail: "Login domains not setup",
+            });
+          } else {
+            if (data.domains.findIndex((d: any) => d == tempDomainName) == -1) {
+              this.messageService.add({
+                severity: "error",
+                summary: "Error",
+                detail: "Email is not in the allowed domains list",
+              });
+            } else {
+              insertUserflg = true;
+            }
+          }
+        } else {
+          insertUserflg = true;
         }
-      );
+        if (insertUserflg) {
+          this.userService
+            .addUser(
+              this.name,
+              this.email,
+              this.phone,
+              +this.tenantId,
+              this.userType,
+              this.isActive
+            )
+            .subscribe(
+              (data: any) => {
+                this.messageService.add({
+                  severity: "success",
+                  summary: "Success",
+                  detail: "User created successfully",
+                });
+              },
+              (e: any) => {
+                this.messageService.add({
+                  severity: "error",
+                  summary: "Error",
+                  detail: e.error.message,
+                });
+              }
+            );
+        }
+      });
   }
 }

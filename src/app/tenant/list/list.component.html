@@ -14,12 +14,14 @@
         [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
-                <th>Id</th>
+                <th style="width: 80px;">Id</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Updated At</th>
-                <th>Updated By</th>
-                <th style="width: 150px; text-align: center;">Active</th>
+                <th>Phone</th>
+                <th style="width: 80px;">Users</th>
+                <th style="width: 220px;">Updated At</th>
+                <th style="width: 150px;">Updated By</th>
+                <th style="width: 100px; text-align: center;">Active</th>
                 <th style="width: 250px; text-align: center;">Actions</th>
             </tr>
         </ng-template>
@@ -28,6 +30,8 @@
                 <td>{{ tenant.id }}</td>
                 <td>{{ tenant.name }}</td>
                 <td>{{ tenant.email }}</td>
+                <td>{{ tenant.phone }}</td>
+                <td style="text-align: center;">{{ tenant.userCount }}</td>
                 <td>{{ tenant.updatedAt | date:'medium' }}</td>
                 <td>{{ tenant.updator.name }}</td>
                 <td style="text-align: center;">
@@ -37,7 +41,7 @@
                     <a routerLink="/tenants/edit/{{tenant.id}}" class="mr-3">
                         <i class="pi pi-pencil text-primary"></i>
                     </a>
-                    <a href="javascript:void(0)" class="mr-3">
+                    <a routerLink="/tenants/clone/{{tenant.id}}" class="mr-3">
                         <i class="pi pi-clone text-green"></i>
                     </a>
                     <a href="javascript:void(0)" (click)="deleteTenant(tenant.id)" class="mr-3">

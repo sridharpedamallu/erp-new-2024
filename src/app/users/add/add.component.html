@@ -1,18 +1,18 @@
 <div class="p-4">
-
-    <p-card class="p-0">
-        <div class="grid">
-            <div class="col-10">
-                <span class="text-2xl">Add User</span>
-            </div>
-            <div class="col-2">
-                <div style="display: flex; align-items: center; justify-content: end;">
-                    <a routerLink="/users/list/tenant/{{tenantId}}" class="ml-2">Back to User list</a>
-                    <span>|</span>
-                    <a routerLink="/tenants/list" class="ml-2">Back to Tenant list</a>
-                </div>
+    <div class="grid">
+        <div class="col-10">
+            <span class="text-2xl">Add User</span>
+        </div>
+        <div class="col-2">
+            <div style="display: flex; align-items: center; justify-content: end;">
+                <a routerLink="/users/list/tenant/{{tenantId}}" class="ml-2">Back to User list</a>
+                <span>|</span>
+                <a routerLink="/tenants/list" class="ml-2">Back to Tenant list</a>
             </div>
         </div>
+    </div>
+    <p-card class="p-0">
+
         <div class="grid mt-2">
             <div class="col-fixed" style="width:200px">
                 <label for="userName">User Name</label>

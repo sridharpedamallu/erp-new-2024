@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { MainTopNavComponent } from "./common/main-top-nav/main-top-nav.component";
 import { ThemeService } from "./services/theme.service";
 import { AuthService } from "./services/auth.service";
+import { SignalsService } from "./services/signals.service";
 
 @Component({
   selector: "app-root",
@@ -15,7 +16,7 @@ import { AuthService } from "./services/auth.service";
 export class AppComponent {
   constructor(
     public themeService: ThemeService,
-    public authService: AuthService
+    public signals: SignalsService
   ) {
     this.themeService.currentTheme.set("dark");
     this.themeService.applyTheme("dark");

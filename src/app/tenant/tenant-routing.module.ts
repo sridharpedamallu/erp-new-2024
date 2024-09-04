@@ -10,6 +10,10 @@ const routes: Routes = [
     component: AddComponent,
   },
   {
+    path: "clone/:id",
+    component: AddComponent,
+  },
+  {
     path: "edit/:id",
     component: EditComponent,
   },

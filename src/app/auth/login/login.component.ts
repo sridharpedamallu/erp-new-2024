@@ -8,6 +8,7 @@ import { InputTextModule } from "primeng/inputtext";
 import { FormsModule } from "@angular/forms";
 import { ToastModule } from "primeng/toast";
 import { EncryptServiceService } from "../../services/encrypt.service";
+import { SignalsService } from "../../services/signals.service";
 
 @Component({
   selector: "app-login",
@@ -36,7 +37,8 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router,
     private messageService: MessageService,
-    private encryptService: EncryptServiceService
+    private encryptService: EncryptServiceService,
+    private signals: SignalsService
   ) {}
 
   SwitchLoginHandler(params: any) {
@@ -48,21 +50,16 @@ export class LoginComponent {
   loginButtonHandler() {
     this.data.otp = "";
     this.data.otpLogin = false;
+
     if (this.data.otpLogin && this.data.otp.toString().length > 0) {
       this.ValidateOTPHandler();
     } else {
       this.authService.LoginAction({ ...this.data }).subscribe(
         (data: any) => {
-          this.authService.loggedInUser.set({ ...data });
-
+          this.signals.loggedInUser.set({ ...data });
           const dt = new Date();
-          sessionStorage.setItem(
-            "user",
-            this.encryptService.encrypt(JSON.stringify(data))
-          );
-          sessionStorage.setItem("login", dt.toISOString());
           sessionStorage.setItem("lastAccessTime", dt.toISOString());
-          this.authService.loginSignal.set(true);
+          this.signals.loginSignal.set(true);
           this.router.navigate(["/"]);
         },
         (e: any) => {

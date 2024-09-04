@@ -1,16 +1,17 @@
 <div class="p-4">
 
-    <p-card class="p-0">
-        <div class="grid">
-            <div class="col-10">
-                <span class="text-2xl">Add New Tenant</span>
-            </div>
-            <div class="col-2">
-                <div style="display: flex; align-items: center; justify-content: end;">
-                    <a routerLink="/tenants/list">Back to list</a>
-                </div>
+
+    <div class="grid">
+        <div class="col-10">
+            <span class="text-2xl">Add New Tenant</span>
+        </div>
+        <div class="col-2">
+            <div style="display: flex; align-items: center; justify-content: end;">
+                <a routerLink="/tenants/list">Back to list</a>
             </div>
         </div>
+    </div>
+    <p-card class="p-0">
         <div class="grid mt-2">
             <div class="col-fixed" style="width:200px">
                 <label for="tenantName">Tenant Name</label>
@@ -34,7 +35,7 @@
                 <label for="phone">Phone</label>
             </div>
             <div class="col-10">
-                <input id="phone" type="text"
+                <input id="phone" type="text" [(ngModel)]="phone"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">
             </div>
         </div>

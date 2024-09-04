@@ -1,0 +1,47 @@
+<div class="grid mt-2">
+    <div class="col-fixed" style="width:100px">
+    </div>
+    <div class="col-5">
+        <p-checkbox [(ngModel)]="domainRestricted" binary="true" inputId="domainRestricted" />
+        <label class="ml-2" for="domainRestricted">Domain restricted ?</label>
+        @if(domainRestricted){
+        <div class="grid mt-4">
+            <div class="col-4">
+                <label for="domain">Enter Domain</label>
+            </div>
+            <div class="col-6">
+                <input id="domain" type="text" [(ngModel)]="domain"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">
+                <button pButton label="Add" class="p-button-sm text-xs ml-2" (click)="addDomain()"></button>
+
+            </div>
+        </div>
+        @for (d of domainList; track $index) {
+        <div class="grid mt-1">
+            <div class="col-2" style="width:50px">
+                <a href="javascript:void(0)" class="mr-2" (click)="deleteDomain($index)">
+                    <i class="pi pi-trash text-xl text-red"></i>
+                </a>
+            </div>
+            <div class="col-10">
+                {{d | lowercase}}
+            </div>
+        </div>
+        }
+        }
+    </div>
+    <div class="col-5">
+        <p-checkbox [(ngModel)]="clientLoginAccess" binary="true" inputId="clientLogin" />
+        <label class="ml-2" for="clientLogin">Enable client login ?</label>
+    </div>
+</div>
+<div class="grid mt-2">
+    <div class="col-fixed" style="width:100px">
+    </div>
+    <div class="col">
+        <button pButton label="Save" icon="pi pi-save" class="p-button-sm text-xs ml-2"
+            (click)="saveSettings()"></button>
+    </div>
+</div>
+<p-toast />
+<p-confirmDialog />
