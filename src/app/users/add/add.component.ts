@@ -7,11 +7,19 @@ import { UsersService } from "../../services/users.service";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
 import { TenantsService } from "../../services/tenants.service";
+import { DropdownModule } from "primeng/dropdown";
 
 @Component({
   selector: "app-add",
   standalone: true,
-  imports: [CardModule, ButtonModule, RouterModule, FormsModule, ToastModule],
+  imports: [
+    CardModule,
+    ButtonModule,
+    RouterModule,
+    FormsModule,
+    ToastModule,
+    DropdownModule,
+  ],
   templateUrl: "./add.component.html",
   styleUrl: "./add.component.scss",
   providers: [MessageService],
@@ -24,6 +32,12 @@ export class AddComponent {
   phone: string = "";
   isActive: boolean = false;
   userType: number = 1;
+
+  userTypes: any[] = [
+    { id: 1, type: "User" },
+    { id: 2, type: "Contributor" },
+    { id: 9, type: "Admin" },
+  ];
 
   constructor(
     private activatedRoute: ActivatedRoute,

@@ -2,12 +2,12 @@ import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { ButtonModule } from "primeng/button";
-import { CardModule } from "primeng/card";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { TableModule } from "primeng/table";
 import { ToastModule } from "primeng/toast";
 import { UsersService } from "../../services/users.service";
 import { MessageService, ConfirmationService } from "primeng/api";
+import { UserTypes } from "../../enums";
 
 @Component({
   selector: "app-list",
@@ -27,6 +27,8 @@ import { MessageService, ConfirmationService } from "primeng/api";
 export class ListComponent implements OnInit {
   tenantId: number = 0;
   userList: any[] = [];
+
+  userTypes = UserTypes;
 
   constructor(
     private activatedRoute: ActivatedRoute,

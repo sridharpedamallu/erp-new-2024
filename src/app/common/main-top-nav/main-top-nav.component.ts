@@ -19,6 +19,8 @@ export class MainTopNavComponent {
   sidebarVisible = false;
   items: MenuItem[] | undefined;
   userItems: MenuItem[] | undefined;
+  contributorItems: MenuItem[] | undefined;
+  adminItems: MenuItem[] | undefined;
   superUseritems: MenuItem[] | undefined;
 
   constructor(
@@ -33,13 +35,33 @@ export class MainTopNavComponent {
         icon: "pi pi-fw pi-users",
         routerLink: "customers/list",
       },
+    ];
+
+    this.contributorItems = [
+      {
+        label: "Customers",
+        icon: "pi pi-fw pi-users",
+        routerLink: "customers/list",
+      },
+      {
+        label: "General Setup",
+        icon: "pi pi-fw pi-users",
+        routerLink: "customers/add",
+      },
+    ];
+    this.adminItems = [
+      {
+        label: "Customers",
+        icon: "pi pi-fw pi-users",
+        routerLink: "customers/list",
+      },
       {
         label: "General Setup",
         icon: "pi pi-fw pi-users",
         routerLink: "customers/add",
       },
       {
-        label: "General Setup 1",
+        label: "Users",
         icon: "pi pi-fw pi-users",
         routerLink: "customers/add",
       },
@@ -68,14 +90,24 @@ export class MainTopNavComponent {
         routerLink: "tenants/add",
       },
     ];
+    if (this.signals.loggedInUser()) {
+      switch (this.signals.loggedInUser().userType) {
+        case 999:
+          this.items = [...this.superUseritems];
+          break;
+        case 1:
+          this.items = [...this.userItems];
+          break;
+        case 2:
+          this.items = [...this.contributorItems];
+          break;
+        case 9:
+          this.items = [...this.adminItems];
+          break;
 
-    if (
-      this.signals.loggedInUser() &&
-      this.signals.loggedInUser().userType == 999
-    ) {
-      this.items = [...this.superUseritems];
-    } else {
-      this.items = [...this.userItems];
+        default:
+          break;
+      }
     }
   }
 

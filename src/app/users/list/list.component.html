@@ -37,7 +37,7 @@
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>
-                <td>{{ user.userType }}</td>
+                <td>{{ userTypes[user.userType] }}</td>
                 <td>{{ user.updatedAt | date:'medium' }}</td>
                 <td>{{ user.updator.name }}</td>
                 <td style="text-align: center;">

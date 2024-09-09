@@ -11,11 +11,21 @@ export class TenantsService {
   constructor(private http: HttpClient, private signals: SignalsService) {}
 
   getAllTenants() {
-    return this.http.get(this.url);
+    const token = this.signals.loggedInUser().token;
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    });
+    return this.http.get(this.url, { headers: headers });
   }
 
   getAllTenantById(id: number) {
-    return this.http.get(this.url + "/" + id.toString());
+    const token = this.signals.loggedInUser().token;
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    });
+    return this.http.get(this.url + "/" + id.toString(), { headers: headers });
   }
 
   addTenant(name: string, email: string, phone: string, isActive: boolean) {
@@ -55,15 +65,38 @@ export class TenantsService {
     );
   }
   deleteTenant(id: number) {
-    return this.http.delete(this.url + "/" + id.toString());
+    const token = this.signals.loggedInUser().token;
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    });
+    return this.http.delete(this.url + "/" + id.toString(), {
+      headers: headers,
+    });
   }
   restoreTenant() {}
   getTenantLoginSetupData(id: number) {
-    return this.http.get(this.url + "/login-settings/" + id.toString());
+    const token = this.signals.loggedInUser().token;
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    });
+    return this.http.get(this.url + "/login-settings/" + id.toString(), {
+      headers: headers,
+    });
   }
   setLoginSettings(id: number, data: any) {
-    return this.http.post(this.url + "/login-settings/" + id.toString(), {
-      ...data,
+    const token = this.signals.loggedInUser().token;
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
     });
+    return this.http.post(
+      this.url + "/login-settings/" + id.toString(),
+      {
+        ...data,
+      },
+      { headers: headers }
+    );
   }
 }

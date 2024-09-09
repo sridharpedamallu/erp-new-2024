@@ -1,4 +1,5 @@
 import { Injectable, signal } from "@angular/core";
+import { UserTypes } from "../enums";
 
 interface IUser {
   name: string;
@@ -6,14 +7,8 @@ interface IUser {
   email: string;
   password: string;
   tenantId: number;
-  userType: EUserType;
+  userType: UserTypes;
   token: string;
-}
-
-enum EUserType {
-  "client_support" = 1,
-  "client_user" = 2,
-  "system_admin" = 999,
 }
 
 @Injectable({

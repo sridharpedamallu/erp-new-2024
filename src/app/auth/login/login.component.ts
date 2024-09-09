@@ -27,8 +27,8 @@ import { SignalsService } from "../../services/signals.service";
 export class LoginComponent {
   otpGenerated: boolean = false;
   data: any = {
-    email: "sys.admin@erp.com",
-    password: "",
+    email: "test1@test111.com",
+    password: "test",
     otpLogin: false,
     otp: "",
   };

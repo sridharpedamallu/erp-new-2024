@@ -46,8 +46,8 @@
                 <label for="userType">User Type</label>
             </div>
             <div class="col-10">
-                <input id="userType" type="text" [(ngModel)]="userType"
-                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary">
+                <p-dropdown [options]="userTypes" [(ngModel)]="userType" optionLabel="type" optionValue="id"
+                    placeholder="Select a Type" />
             </div>
         </div>
         <div class="grid mt-2">

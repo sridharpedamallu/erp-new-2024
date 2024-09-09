@@ -8,6 +8,7 @@ import { CardModule } from "primeng/card";
 import { ToastModule } from "primeng/toast";
 import { UsersService } from "../../services/users.service";
 import { TenantsService } from "../../services/tenants.service";
+import { DropdownModule } from "primeng/dropdown";
 
 @Component({
   selector: "app-edit",
@@ -19,6 +20,7 @@ import { TenantsService } from "../../services/tenants.service";
     CommonModule,
     RouterModule,
     ToastModule,
+    DropdownModule,
   ],
   templateUrl: "./edit.component.html",
   styleUrl: "./edit.component.scss",
@@ -55,7 +57,7 @@ export class EditComponent {
         if (updateUserflg) {
           this.userService
             .editUser(
-              this.userId,
+              this.id,
               this.name,
               this.email,
               this.phone,
@@ -82,8 +84,14 @@ export class EditComponent {
       });
   }
 
+  userTypes: any[] = [
+    { id: 1, type: "User" },
+    { id: 2, type: "Contributor" },
+    { id: 9, type: "Admin" },
+  ];
+
   tenantId: number = 0;
-  userId: number = 0;
+  id: number = 0;
   name: string = "";
   isActive: boolean = false;
   email: string = "";
@@ -98,12 +106,13 @@ export class EditComponent {
   ) {
     this.activatedRoute.params.subscribe((e: any) => {
       this.tenantId = e.tenantId;
-      this.userId = e.id;
-      this.userService.getUserById(this.userId).subscribe((data: any) => {
+      this.id = e.id;
+      this.userService.getUserById(this.id).subscribe((data: any) => {
         this.name = data.name;
         this.email = data.email;
         this.isActive = data.isActive;
         this.phone = data.phone;
+        this.userType = data.userType;
       });
     });
   }
